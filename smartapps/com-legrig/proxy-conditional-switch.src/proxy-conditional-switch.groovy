@@ -51,14 +51,14 @@ def updated() {
 }
 
 def switchOnHandler(evt) {
-	log.debug "Realswitch is: " + realswitch.displayName
+    log.debug "Realswitch is: " + realswitch.displayName
     state.wasOff = realswitch.currentValue("switch") == "off"
     log.debug "switchOnCondHandler: wasOff="+state.wasOff
     if(state.wasOff)realswitch.on()
 }
 
 def switchOffHandler(evt) {
-	log.debug "switchOffCondHandler: wasOff="+state.wasOff
+    log.debug "switchOffCondHandler: wasOff="+state.wasOff
     if(state.wasOff)realswitch.off()
 }
 
