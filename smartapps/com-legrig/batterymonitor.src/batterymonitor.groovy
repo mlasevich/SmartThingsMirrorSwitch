@@ -28,7 +28,7 @@ preferences {
 	section("Choose one or more, when..."){
 		input "sensor", "capability.battery", title: "Sensor(s) To Monitor", required: false, multiple: true
 	}
-	section("Level To Alert Below(percent)") {
+	section("Level To Alert At or Below(in percent)") {
 		input "threshold", "decimal", title: "Percent", required: false, defaultValue: 77
 	}
 	section("Send this message (optional, sends standard status message if not specified)"){
