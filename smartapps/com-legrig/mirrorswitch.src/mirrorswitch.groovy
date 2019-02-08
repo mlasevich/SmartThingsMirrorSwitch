@@ -14,109 +14,106 @@
  *
  */
 definition(
-    name: "MirrorSwitch",
-    namespace: "com.legrig",
-    author: "Michael Lasevich",
-    description: "Mirror Switch",
-    category: "Convenience",
-    iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
-    iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png",
-    iconX3Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png")
+		name: "MirrorSwitch",
+		namespace: "com.legrig",
+		author: "Michael Lasevich",
+		description: "Mirror Switch",
+		category: "Convenience",
+		iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
+		iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png",
+		iconX3Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png"
+		)
 
 
 preferences {
-    section("Switch Linkage") { 
-        input "realswitch", "capability.switch", 
-			title: "Switch To Mirror From...", 
-        	required: true
-        input "mirrorswitches", "capability.switch", 
-			title: "Switch(es) To Mirror To...", 
-        	multiple: true
-    }
+	section("Switch Linkage") {
+		input "realswitch", "capability.switch", title: "Switch To Mirror From...", required: true
+		input "mirrorswitches", "capability.switch", title: "Switch(es) To Mirror To...", multiple: true
+	}
 }
 
 private subscribe_to_events(){
-    log.debug("Subscribing...")
-    subscribe(realswitch, "switch", switchEventHandler)
-    subscribe(realswitch, "level", levelEventHandler)
-//    subscribe(realswitch, "switch.off", switchOffHandler)
-//    subscribe(realswitch, "switch.setLevel", switchLevelHandler)
+	log.debug("Subscribing...")
+	subscribe(realswitch, "switch", switchEventHandler)
+	subscribe(realswitch, "level", levelEventHandler)
+	//    subscribe(realswitch, "switch.off", switchOffHandler)
+	//    subscribe(realswitch, "switch.setLevel", switchLevelHandler)
 }
 
 def installed() {
-    log.debug "Installed"
-    subscribe_to_events()
+	log.debug "Installed"
+	subscribe_to_events()
 }
 
 def updated() {
-    log.debug "Updated"
-    unsubscribe()
-    subscribe_to_events()
-    //state.isActive = false
+	log.debug "Updated"
+	unsubscribe()
+	subscribe_to_events()
+	//state.isActive = false
 }
 
 
 
 def turnOn() {
-     log.debug "turnOn()"
-     def level = realswitch.currentLevel
-     mirrorswitches.each{
-	   log.debug("Turning on ${it.displayName}")
-       it.on()
-       log.debug("Setting ${it.displayName} level from ${it.currentLevel} to ${level}")
-       it.setLevel(level)
-     }
+	log.debug "turnOn()"
+	def level = realswitch.currentLevel
+	mirrorswitches.each{
+		log.debug("Turning on ${it.displayName}")
+		it.on()
+		log.debug("Setting ${it.displayName} level from ${it.currentLevel} to ${level}")
+		it.setLevel(level)
+	}
 }
 
 def turnOff(){
-    log.debug "turnOn()"
-    mirrorswitches.each{
-      log.debug("Turning off ${it.displayName}")
-      it.off()
-    }
+	log.debug "turnOn()"
+	mirrorswitches.each{
+		log.debug("Turning off ${it.displayName}")
+		it.off()
+	}
 }
 
 def setLevel(level){
-  log.debug "Level set to: ${level}"
-  mirrorswitches.each{
-    if (realswitch.currentValue("switch") == "on"){
-  	   if (it.currentValue("switch") != "on"){
-         log.debug "Correcting switch ${it.displayName} to be on"
-         it.on();
-       }
-       log.debug "Setting switch ${it.displayName} to level ${level}"
-       it.setLevel(level)
-    }else{
-      log.debug("Skipping device that is not on!")
-    }
-  }
+	log.debug "Level set to: ${level}"
+	mirrorswitches.each{
+		if (realswitch.currentValue("switch") == "on"){
+			if (it.currentValue("switch") != "on"){
+				log.debug "Correcting switch ${it.displayName} to be on"
+				it.on();
+			}
+			log.debug "Setting switch ${it.displayName} to level ${level}"
+			it.setLevel(level)
+		}else{
+			log.debug("Skipping device that is not on!")
+		}
+	}
 }
 
 def levelEventHandler(evt){
-  def level_raw = evt.value.toInteger()
-  def level = level_raw
-  if ( level_raw < 0 ) {
-    level = 0
-  } else if ( level_raw > 100){
-    level = 100
-  } else {
-    level = level_raw
-  }
-  log.debug "Level set to: ${level} (${level_raw})"
-  setLevel(level)
+	def level_raw = evt.value.toInteger()
+	def level = level_raw
+	if ( level_raw < 0 ) {
+		level = 0
+	} else if ( level_raw > 100){
+		level = 100
+	} else {
+		level = level_raw
+	}
+	log.debug "Level set to: ${level} (${level_raw})"
+	setLevel(level)
 }
 
 def switchEventHandler(evt){
-    if (evt.value == "on") {
-        log.debug "switch turned on!"
-        turnOn()
-    } else if (evt.value == "off") {
-        log.debug "switch turned off!"
-        turnOff()
-    } else {
-        log.debug "Unknown switch event: ${evt.value}!"
-    }
+	if (evt.value == "on") {
+		log.debug "switch turned on!"
+		turnOn()
+	} else if (evt.value == "off") {
+		log.debug "switch turned off!"
+		turnOff()
+	} else {
+		log.debug "Unknown switch event: ${evt.value}!"
+	}
 }
 def uninstalled() {
- 	//unsubscribe()
+	//unsubscribe()
 }
