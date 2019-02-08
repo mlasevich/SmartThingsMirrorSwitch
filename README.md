@@ -10,3 +10,6 @@ My SmartApps and other SmartThings code
   via the proxy and ignore it if it is already on. Useful for bypassing automation if light is aready on.
 
 * SmartMotionProxySwitch - Allow motion sensor to control a switch with a conditional proxy.
+
+* BatteryMonitor - Monitor battery level for a device and alert if level falls bellow. Especially useful
+  for FirstAlert ZCombo Smoke Detectors which do not have that capability built in
