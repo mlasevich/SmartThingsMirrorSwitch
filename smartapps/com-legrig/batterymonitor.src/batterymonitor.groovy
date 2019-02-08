@@ -20,6 +20,7 @@ definition(
 		category: "Convenience",
 		iconUrl: "http://cdn.device-icons.smartthings.com/Electronics/electronics13-icn.png",
 		iconX2Url: "http://cdn.device-icons.smartthings.com/Electronics/electronics13-icn@2x.png",
+		iconX3Url: "http://cdn.device-icons.smartthings.com/Electronics/electronics13-icn@2x.png",
 		pausable: true
 		)
 
