@@ -13,7 +13,7 @@
  *  Notify Me When Battery Is Low
  */
 definition(
-		name: "Battery Monitor",
+		name: "BatteryMonitor",
 		namespace: "com.legrig",
 		author: "Michael Lasevich",
 		description: "Receive notifications when device battery is low",
